@@ -13,7 +13,8 @@ describe('robot module', function () {
     
     beforeEach(function() {
         grid = new Grid(8,8);
-        robot = newRobot(5,5,newOrientation('north'),grid)
+        const coords = {x:5,y:5}
+        robot = newRobot(coords,newOrientation('north'),grid)
     });
     
     it('should create valid Robot', function () {
@@ -80,7 +81,7 @@ describe('robot module', function () {
         robot = robot.handleCommands(commandList)
         expect(robot.isOffWorld()).to.be.equal(true)
         expect(robot.coords()).to.deep.equal({x:6,y:8})
-        let robot2 = newRobot(5,5,newOrientation('north'),grid)
+        let robot2 = newRobot({x:5,y:5},newOrientation('north'),grid)
         robot2 = robot2.handleCommands(commandList)
         expect(robot2.isOffWorld()).to.be.equal(false)   
         expect(robot2.coords()).to.deep.equal({x:7,y:8})

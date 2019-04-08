@@ -4,16 +4,16 @@ function Grid(width,height){
     this.scents = []
 }
 
-Grid.prototype.isOffWorld = function(x,y){
-    return  x<0 || x > this.width || y <0 || y > this.height
+Grid.prototype.isOffWorld = function(coords){
+    return  coords.x<0 || coords.x > this.width || coords.y <0 || coords.y > this.height
 }
 
-Grid.prototype.addScent = function(x, y) {
-    this.scents.push({x,y})
+Grid.prototype.addScent = function(coords) {
+    this.scents.push({x: coords.x, y: coords.y})
 }
 
-Grid.prototype.hasScent = function(x, y) {
-    return Boolean(this.scents.find(elem => elem.x == x && elem.y==y))
+Grid.prototype.hasScent = function(coords) {
+    return Boolean(this.scents.find(elem => elem.x == coords.x && elem.y==coords.y))
 }
 
 

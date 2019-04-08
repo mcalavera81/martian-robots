@@ -1,17 +1,17 @@
 const newOrientation = require('./orientation').newOrientation
 
-function Position(x, y, orientation) {
-    this.x = x;
-    this.y = y;
+function Position(coords, orientation) {
+    this.coords = coords;
     this.orientation = orientation;
 }
 
 Position.prototype.newOrientation = function(newOrientation){
-    return new Position(this.x,this.y, newOrientation)
+    return new Position(this.coords, newOrientation)
 }
 
 Position.prototype.newDelta = function(delta){
-    return new Position(this.x+delta.x,this.y+delta.y,this.orientation)
+    const newCoords = {x:this.coords.x+delta.x, y:this.coords.y+delta.y }
+    return new Position(newCoords,this.orientation)
 }
 
 Position.prototype.moveForward = function(){
@@ -27,6 +27,6 @@ Position.prototype.rotateLeft = function(){
     return this.newOrientation(this.orientation.left())
 }
 
-module.exports = function(x,y,orientation){
-    return new Position(x,y,orientation)
+module.exports = function(coords,orientation){
+    return new Position(coords,orientation)
 }

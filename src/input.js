@@ -9,7 +9,6 @@ LLFFFLFLFL
 */
 'use strict';
 
-const expect = require('chai').expect;
 const commands = require('./commands');
 const position = require('./position');
 const newOrientation = require('./orientation').newOrientation

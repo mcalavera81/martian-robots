@@ -7,10 +7,10 @@ function moveForward(robot){
     }
     const newPosition = robot.position.moveForward()
     const grid = robot.grid; 
-    if(grid.isOffWorld(newPosition.x, newPosition.y)){
-        if(!grid.hasScent(robot.position.x, robot.position.y)){
+    if(grid.isOffWorld(newPosition.coords)){
+        if(!grid.hasScent(robot.position.coords)){
             robot.setOffWorld()
-            grid.addScent(robot.position.x, robot.position.y)
+            grid.addScent(robot.position.coords)
         }   
         return robot
     }

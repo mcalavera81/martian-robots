@@ -5,10 +5,7 @@ function Robot(position,grid) {
     this.grid = grid;
     this.offWorld = false;
     this.coords = function(){
-      return {
-        x: this.position.x,
-        y: this.position.y
-      }
+      return this.position.coords
     }
     this.orientation = function(){
       return this.position.orientation.value
@@ -34,8 +31,8 @@ Robot.prototype.isOffWorld = function(){
   return this.offWorld
 }
 
-module.exports.newRobot = function newRobot(x,y,orientation,grid){
-    return new Robot(position(x,y,orientation),grid)
+module.exports.newRobot = function newRobot(coords,orientation,grid){
+    return new Robot(position(coords,orientation),grid)
 }
 
 module.exports.Robot = Robot
