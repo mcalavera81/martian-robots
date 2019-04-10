@@ -22,6 +22,6 @@ const logger = createLogger({
             )
         })
     ]
-});
+})
 
 export { logger }
