@@ -4,15 +4,35 @@
   "description": "",
   "main": "index.js",
   "directories": {
-    "test": "test"
+    "test": "build/test"
   },
   "scripts": {
-    "test": "mocha"
+    "clean": "rm -rf build/*",
+    "pretest": "npm run clean && tsc -p .",
+    "prebuild": "npm run clean",
+    "build": "tsc -p . && npm run tslint",
+    "start": "npm run serve",
+    "tslint": "tslint -c tslint.json -p tsconfig.json",
+    "watch-node": "nodemon build/src/app.js",
+    "watch": "tsc -w",
+    "serve": "node build/src/app.js",
+    "test": "mocha build/test/**/*.js",
+    "tsc": "tsc"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/chai": "^4.1.7",
+    "@types/co": "^4.6.0",
+    "@types/mocha": "^5.2.6",
+    "@types/node": "^11.13.2",
     "chai": "^4.2.0",
-    "mocha": "^6.1.1"
+    "mocha": "^6.1.1",
+    "ts-node": "^8.0.3"
+  },
+  "dependencies": {
+    "co": "^4.6.0",
+    "thunkify": "^2.1.2",
+    "typescript": "^3.4.2"
   }
 }
