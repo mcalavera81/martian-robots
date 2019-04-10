@@ -9,7 +9,7 @@ export interface Output {
 }
 
 function writeOutput(file: string, output: Output): Promise<any> {
-    return writeFileP(file, stringify(output), "utf-8")
+    return writeFileP(file, stringify(output) + "\n", "utf-8")
 }
 
 function stringify(output: Output): string {
