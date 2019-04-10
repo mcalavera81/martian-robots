@@ -11,7 +11,7 @@ import { logger } from "./config/winston"
 
 type Read = (s: string, t: string) => Promise<string>
 const read: Read = thunkify(fs.readFile)
-const maxCommands: number = 100;
+const maxCommands: number = 100
 
 
 export interface RobotInput {
