@@ -7,7 +7,7 @@ import { newOrientation, Orientation } from "./orientation"
 import fs from "fs"
 import co from "co"
 import thunkify from "thunkify"
-
+import { logger } from "./config/winston"
 
 type Read = (s: string, t: string) => Promise<string>
 const read: Read = thunkify(fs.readFile)
@@ -24,6 +24,7 @@ interface Input {
 }
 
 export function inputParser(inputPath: string): Promise<Input> {
+    logger.debug(`Parsing input file: ${inputPath}`)
     return co(function* () {
         return yield read(inputPath, "utf-8")
     }).then((txt: string) => {
@@ -40,10 +41,10 @@ export function inputParser(inputPath: string): Promise<Input> {
             })
         }
         return inputParsed
+    }).catch((e: Error) => {
+        logger.debug(`Error parsing input file: ${inputPath} => ${JSON.stringify(e.message)}`)
+        return Promise.reject(e)
     })
-        .catch((e: any) =>
-            Promise.reject(e)
-        )
 }
 
 
