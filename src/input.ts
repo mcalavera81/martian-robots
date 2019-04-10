@@ -11,6 +11,7 @@ import { logger } from "./config/winston"
 
 type Read = (s: string, t: string) => Promise<string>
 const read: Read = thunkify(fs.readFile)
+const maxCommands: number = 100;
 
 
 export interface RobotInput {
@@ -42,28 +43,53 @@ export function inputParser(inputPath: string): Promise<Input> {
         }
         return inputParsed
     }).catch((e: Error) => {
-        logger.debug(`Error parsing input file: ${inputPath} => ${JSON.stringify(e.message)}`)
         return Promise.reject(e)
     })
 }
 
 
 
-function gridParser(gridText: string) {
-    const gridInt = gridText.split(" ").map(txt => parseInt(txt.trim()))
+function gridParser(gridText: string): Grid {
+    validateGrid(gridText)
+    const gridInt = gridText.trim().split(" ").map(txt => parseInt(txt.trim()))
     return new Grid(gridInt[0], gridInt[1])
 }
 
 function positionParser(positionStr: string): Position {
-    const [x, y, orientation] = positionStr.split(" ").map(str => str.trim())
+    validatePosition(positionStr)
+    const [x, y, orientation] = positionStr.trim().split(" ").map(str => str.trim())
     return position({ x: parseInt(x), y: parseInt(y) }, orientationMapping[orientation])
 }
 
 
 function commandParser(commandStr: string): Command[] {
-    return commandStr.split("").map(cmd => commandsMapping[cmd]).filter(Boolean)
+    const trimmedCommandStr = commandStr.trim()
+    validateCommands(trimmedCommandStr)
+    return trimmedCommandStr.split("").map(cmd => commandsMapping[cmd])
 }
 
+function validateGrid(gridStr: string) {
+    if (!/^\s*\d+\s+\d+\s*$/.test(gridStr)) {
+        throw Error(`Grid malformed: ${gridStr}`)
+    }
+}
+function validatePosition(positionStr: string) {
+    if (!/^\s*\d+\s+\d+\s+[EWNS]\s*$/.test(positionStr)) {
+        throw Error(`Position malformed: ${positionStr}`)
+    }
+}
+function validateCommands(commandStr: string) {
+    if (commandStr.length > 100) {
+        throw Error(`Exceeded maximum (${maxCommands}) number of commands: ${commandStr.length}`)
+    }
+
+    const availableCommands = Object.keys(commandsMapping)
+
+    if (commandStr.split("").filter(cmd => !availableCommands.includes(cmd)).length > 0) {
+        throw Error(`At least one command is not valid: ${commandStr}`)
+    }
+
+}
 
 const commandsMapping: { [key: string]: Command } = {
     F: moveForward,

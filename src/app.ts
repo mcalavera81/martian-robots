@@ -19,7 +19,11 @@ function app(inputPath: string) {
         })
         const output: Output = { robots: robotsAfter }
         writeOutput(inputPath + ".out", output)
-    }).catch(logger.error)
+    }).catch(logError)
+}
+
+function logError(e: Error) {
+    logger.error(JSON.stringify(e, Object.getOwnPropertyNames(e), 4))
 }
 
 app(inputPath)
